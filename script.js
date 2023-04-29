@@ -1,5 +1,7 @@
 const app = document.getElementById("app");
 const bat = document.getElementById("bat");
+const batFound = document.getElementById("batFound");
+const call = document.getElementById("call");
 const callAudio = document.getElementById("callAudio");
 const soundAudio = document.getElementById("soundAudio");
 const foundAudio = document.getElementById("foundAudio");
@@ -14,6 +16,8 @@ function moveBat() {
     const newPos = randomPosition();
     bat.style.left = `${newPos.x}px`;
     bat.style.top = `${newPos.y}px`;
+    batFound.style.left = `${newPos.x}px`;
+    batFound.style.top = `${newPos.y}px`;
 }
 
 function distance(x1, y1, x2, y2) {
@@ -30,7 +34,14 @@ app.addEventListener("click", (event) => {
     const rect = app.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    
+
+    call.style.left = `${x - 100}px`;
+    call.style.top = `${y - 100}px`;
+    call.style.display = "block";
+    setTimeout(() => {
+        call.style.display = "none";
+    }, 1000);
+
     callAudio.play();
     const batPos = {
         x: parseInt(bat.style.left, 10) + bat.clientWidth / 2,
@@ -44,14 +55,19 @@ app.addEventListener("click", (event) => {
     setTimeout(() => {
         bat.style.opacity = opacity;
         playSoundProximity(opacity);
+        setTimeout(() => {
+            bat.style.opacity = 0;
+        }, 1000);
     }, 1000);
 
     if (event.target === bat) {
-        bat.style.opacity = 1;
+        bat.style.display = "none";
+        batFound.style.display = "block";
         foundAudio.play();
         setTimeout(() => {
+            bat.style.display = "block";
+            batFound.style.display = "none";
             moveBat();
-            bat.style.opacity = 0;
         }, 4000);
     }
 });

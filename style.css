@@ -10,9 +10,12 @@ body, html {
     overflow: hidden;
 }
 
-#bat {
+#bat, #batFound, #call {
     position: absolute;
     width: 200px;
     height: 200px;
+}
+
+#bat {
     opacity: 0;
 }
